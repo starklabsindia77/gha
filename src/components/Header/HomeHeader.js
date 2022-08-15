@@ -17,8 +17,8 @@ function HomeHeader() {
                         </div>
                         <div className="header-top-right">
                             <ul className="header-info">
-                                <li><Link onClick={apply}>Login</Link></li>
-                                <li><Link onClick={apply}>Register</Link></li>
+                                <li onClick={apply}>Login</li>
+                                <li onClick={apply}>Register</li>
                                 <li><Link to="tel:+011235641231"><i className="icon-phone"></i>Call: 123 4561 5523</Link></li>
                                 <li><Link to="mailto:info@edublink.com" target="_blank"><i className="icon-envelope"></i>Email: info@edublink.com</Link></li>
                                 <li className="social-icon">
