@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+
 // import { IconButton } from '@material-ui/core';
 import BusinessIcon from '@mui/icons-material/Business';
 import Stack from '@mui/material/Stack';
@@ -15,75 +15,11 @@ import { Typography, Button } from '@mui/material';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-function CourseCard({ data, wishData }) {
-	const navigate = useNavigate();
-	// const [wishCheck, setWishCheck] = useState(false);
-	// // const username = localStorage.getItem('userName');
-	// // const role = localStorage.getItem('role');
-	// const [wishListData, setWishListData] = useState(wishData);
-
-	// const authToken = localStorage.getItem('auth');
-	// const UserRole = localStorage.getItem('role');
+function CourseCard(props) {
+	const data = props.data
 	const apply = () => {
 		window.open('https://admi-frontend.vercel.app/', "_blank", "noopener noreferrer")		
-	};
-	// const checkWishList = () => {
-	// 	const valueData = wishData.filter((item) => item.courseId === data.guid);
-	// 	if (valueData.length > 0) {
-	// 		setWishCheck(true);
-	// 	}
-	// };
-	// const saveWishlist = (newData) => {
-	// 	const options = {
-	// 		method: 'POST',
-	// 		headers: {
-	// 			'Content-Type': 'application/json;charset=utf-8',
-	// 			authorization: authToken,
-	// 		},
-	// 		body: JSON.stringify(newData),
-	// 	};
-	// 	fetch(`${serverUrl}/wishlist`, options)
-	// 		.then((response) => response.json())
-	// 		.then((d) => {
-	// 			console.log('data', d);
-	// 			if (d.error) {
-	// 				console.log('error msg', d.error);
-	// 			} else if (d.result.length > 0) {
-	// 				const ss = d.result;
-	// 				console.log('result', ss);
-	// 				setWishCheck(true);
-	// 				// setWishListData(ss.wishlist);
-	// 				reloadFun();
-	// 			}
-	// 		});
-	// };
-
-	// const reloadFun = () => {
-	// 	window.location.reload();
-	// };
-
-	// const dataList = wishListData;
-	// const wishlist = () => {
-	// 	const value = dataList.filter((item) => item.courseId === data.guid);
-	// 	if (value.length > 0) {
-	// 		const left = dataList.filter((item) => item.courseId !== data.guid);
-	// 		console.log('left value', left);
-	// 		setWishListData(left);
-	// 		saveWishlist(left);
-	// 	} else {
-	// 		dataList.push({
-	// 			courseId: data.guid,
-	// 			CourseName: data.name,
-	// 			checked: true,
-	// 		});
-	// 		setWishListData(dataList);
-	// 		saveWishlist(dataList);
-	// 	}
-	// };
-
-	// useEffect(() => {
-	// 	checkWishList();
-	// }, []);
+	};	
 
 	return (
 		<div className='post'>

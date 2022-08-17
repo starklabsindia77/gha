@@ -9,7 +9,7 @@ function CourseBreadcrumb() {
                         <h1 className="title">Courses</h1>
                     </div>
                     <ul className="edu-breadcrumb">
-                        <li className="breadcrumb-item"><a href="index-one.html">Home</a></li>
+                        <li className="breadcrumb-item"><a>Home</a></li>
                         <li className="separator"><i className="icon-angle-right"></i></li>
                         <li className="breadcrumb-item active" aria-current="page">Courses</li>
                     </ul>
