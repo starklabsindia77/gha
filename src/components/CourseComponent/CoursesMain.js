@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useState, useMemo} from 'react'
+import React, {useState, useMemo, useEffect} from 'react'
 
 import CourseCard from "../courseCard/CourseCard";
 import Pagination from "../../other/Pagination";
@@ -10,13 +10,19 @@ let PageSize = 10;
 function CoursesMain({data}) {   
 
     const [currentPage, setCurrentPage] = useState(1);
+    const [filterData, setFilterData] = useState([])
     const currentTableData = useMemo(() => {
         const firstPageIndex = (currentPage - 1) * PageSize;
         const lastPageIndex = firstPageIndex + PageSize;
-        return data.slice(firstPageIndex, lastPageIndex);
+        setFilterData(data.slice(firstPageIndex, lastPageIndex)) 
     }, [currentPage]);
+    
+    useEffect(() => {
+        setFilterData(data.slice(0, 10))
+    }, [data])
+    
 
-   
+   console.log("currentTableData", filterData)
   return (
     <div className="edu-course-area course-area-1 section-gap-equal">
             <div className="container">
@@ -248,7 +254,7 @@ function CoursesMain({data}) {
                                 </div>
                             </div> */}
                         </div>
-                        {currentTableData && currentTableData.length > 0 && currentTableData.map((item, i) => (
+                        {filterData && filterData.length > 0 && filterData.map((item, i) => (
                             <CourseCard data={item} key={i} />
                         ))}
                         <Pagination
