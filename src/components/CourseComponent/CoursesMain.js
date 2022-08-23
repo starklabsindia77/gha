@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useMemo, useEffect} from 'react'
-
+import _ from 'underscore';
 import CourseCard from "../courseCard/CourseCard";
 import Pagination from "../../other/Pagination";
+import {serverUrl} from "../../data/config";
 
 
 let PageSize = 10;
@@ -11,18 +12,62 @@ function CoursesMain({data}) {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [filterData, setFilterData] = useState([])
+    const [universityList, setUniversityList] = useState([])
+    const [countryList, setCountryList] = useState([])
+    const [ level, setLevel ] = useState([])
     const currentTableData = useMemo(() => {
         const firstPageIndex = (currentPage - 1) * PageSize;
         const lastPageIndex = firstPageIndex + PageSize;
         setFilterData(data.slice(firstPageIndex, lastPageIndex)) 
     }, [currentPage]);
+
+    const getCountry = () => {
+		const options = {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8',
+			},
+		};
+
+		fetch(`${serverUrl}/university`, options)
+			.then((response) => response.json())
+			.then((d) => {
+				// console.log('data', d);
+				if (d.error) {
+					console.log('error msg', d.error);
+				} else if (d.result.length > 0) {
+					const ss = d.result;
+					const list = [];
+                    const list2 = [];
+					_.each(ss, (dat) => {
+						list.push(dat.country);
+                        list2.push(dat.name)
+					});
+					// console.log('result', list);
+					const uniqueList = [...new Set(list)];
+                    const uniqueList2 = [...new Set(list2)];
+					const UL = [];
+                    const UL2= [];
+					_.each(uniqueList, (dat) => {
+						UL.push({ value: dat, text: dat });
+					});
+                    _.each(uniqueList2, (dat) => {
+						UL2.push({ value: dat, text: dat });
+					});
+					setCountryList(UL);
+                    setUniversityList(UL2);
+					// console.log('unique', UL);
+				}
+			});
+	};
     
     useEffect(() => {
         setFilterData(data.slice(0, 10))
     }, [data])
+    useEffect(() => {
+        getCountry();
+    })
     
-
-   console.log("currentTableData", filterData)
   return (
     <div className="edu-course-area course-area-1 section-gap-equal">
             <div className="container">
@@ -32,9 +77,15 @@ function CoursesMain({data}) {
                         <div className="edu-course-sidebar">
                             <div className="edu-course-widget widget-category">
                                 <div className="inner">
-                                    <h5 className="widget-title">Filter by Categories</h5>
+                                    <h5 className="widget-title">Filter by Country</h5>
                                     <div className="content">
-                                        <div className="edu-form-check">
+                                        {countryList && countryList.map((item, i) => (
+                                            <div className="edu-form-check">
+                                                <input type="checkbox" id="inst-check1"/>
+                                                <label for="inst-check1">{item.text}</label>
+                                            </div>
+                                        ))}
+                                        {/* <div className="edu-form-check">
                                             <input type="checkbox" id="cat-check1" />
                                             <label for="cat-check1">Art &amp; Design <span>(7)</span></label>
                                         </div>
@@ -57,19 +108,22 @@ function CoursesMain({data}) {
                                         <div className="edu-form-check">
                                             <input type="checkbox" id="cat-check6"/>
                                             <label for="cat-check6">Data Science <span>(9)</span></label>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>
                             <div className="edu-course-widget widget-instructor">
                                 <div className="inner">
-                                    <h5 className="widget-title">Instructor</h5>
+                                    <h5 className="widget-title">University</h5>
                                     <div className="content">
-                                        <div className="edu-form-check">
-                                            <input type="checkbox" id="inst-check1"/>
-                                            <label for="inst-check1">Madge Alvarez <span>(2)</span></label>
-                                        </div>
-                                        <div className="edu-form-check">
+                                        {universityList && universityList.map((item, i) => (
+                                            <div className="edu-form-check">
+                                                <input type="checkbox" id="inst-check1"/>
+                                                <label for="inst-check1">{item.text}</label>
+                                            </div>
+                                        ))}
+                                        
+                                        {/* <div className="edu-form-check">
                                             <input type="checkbox" id="inst-check2"/>
                                             <label for="inst-check2">Tyler Hardy <span>(14)</span></label>
                                         </div>
@@ -84,19 +138,19 @@ function CoursesMain({data}) {
                                         <div className="edu-form-check">
                                             <input type="checkbox" id="inst-check5"/>
                                             <label for="inst-check5">Donald Logan <span>(2)</span></label>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>
                             <div className="edu-course-widget widget-level">
                                 <div className="inner">
-                                    <h5 className="widget-title">Level</h5>
+                                    <h5 className="widget-title">Study Level</h5>
                                     <div className="content">
                                         <div className="edu-form-check">
                                             <input type="checkbox" id="level-check1"/>
-                                            <label for="level-check1">All Levels <span>(23)</span></label>
+                                            <label for="level-check1">All Levels <span>({data.length})</span></label>
                                         </div>
-                                        <div className="edu-form-check">
+                                        {/* <div className="edu-form-check">
                                             <input type="checkbox" id="level-check2"/>
                                             <label for="level-check2">Beginner <span>(7)</span></label>
                                         </div>
@@ -107,11 +161,11 @@ function CoursesMain({data}) {
                                         <div className="edu-form-check">
                                             <input type="checkbox" id="level-check4"/>
                                             <label for="level-check4">Intermediate <span>(13)</span></label>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>
-                            <div className="edu-course-widget widget-language">
+                            {/* <div className="edu-course-widget widget-language">
                                 <div className="inner">
                                     <h5 className="widget-title">Language</h5>
                                     <div className="content">
@@ -226,7 +280,7 @@ function CoursesMain({data}) {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="col-lg-9 col-pl--35">
