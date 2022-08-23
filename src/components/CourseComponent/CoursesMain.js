@@ -29,7 +29,7 @@ function CoursesMain({data}) {
 			},
 		};
 
-		fetch(`${serverUrl}/university`, options)
+		fetch(`${serverUrl}/universitypublic`, options)
 			.then((response) => response.json())
 			.then((d) => {
 				// console.log('data', d);
